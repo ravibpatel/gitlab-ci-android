@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-MAINTAINER Ravi Patel <ravi@faked.org>
+LABEL maintainer="Ravi Patel <https://rbsoft.uservoice.com>"
 
 ENV VERSION_TOOLS "8512546"
 
@@ -14,7 +14,6 @@ RUN apt-get -qq update \
       bzip2 \
       curl \
       git-core \
-      apt-transport-https \
       ca-certificates \
       html2text \
       openjdk-17-jdk \
