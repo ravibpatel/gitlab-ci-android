@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 MAINTAINER Ravi Patel <ravi@faked.org>
 
 ENV VERSION_TOOLS "8512546"
