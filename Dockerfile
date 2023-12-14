@@ -20,7 +20,7 @@ RUN apt-get -qq update \
       openjdk-17-jdk \
       libc6-i386 \
       lib32stdc++6 \
-      lib32gcc1 \
+      lib32gcc-s1 \
       lib32ncurses6 \
       lib32z1 \
       unzip \
