@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-MAINTAINER Jan Grewe <jan@faked.org>
+MAINTAINER Ravi Patel <ravi@faked.org>
 
 ENV VERSION_TOOLS "8512546"
 
@@ -14,6 +14,8 @@ RUN apt-get -qq update \
       bzip2 \
       curl \
       git-core \
+      apt-transport-https \
+      ca-certificates \
       html2text \
       openjdk-17-jdk \
       libc6-i386 \
@@ -24,6 +26,7 @@ RUN apt-get -qq update \
       unzip \
       locales \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN update-ca-certificates
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
