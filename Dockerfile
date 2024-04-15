@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="Ravi Patel <https://rbsoft.uservoice.com>"
 
-ENV VERSION_TOOLS "10406996"
+ENV VERSION_TOOLS "11076708"
 
 ENV ANDROID_SDK_ROOT "/sdk"
 # Keep alias for compatibility
