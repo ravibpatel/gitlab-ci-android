@@ -1,9 +1,9 @@
 FROM ubuntu:22.04
 LABEL maintainer="Ravi Patel <https://rbsoft.uservoice.com>"
 
-ENV VERSION_TOOLS "11076708"
+ENV COMMAND_LINE_TOOLS "11479570"
 
-ENV ANDROID_SDK_ROOT "/sdk"
+ENV ANDROID_SDK_ROOT "/android_sdk"
 # Keep alias for compatibility
 ENV ANDROID_HOME "${ANDROID_SDK_ROOT}"
 ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools"
@@ -32,20 +32,18 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN rm -f /etc/ssl/certs/java/cacerts; \
     /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
-RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-${VERSION_TOOLS}_latest.zip > /cmdline-tools.zip \
+RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-${COMMAND_LINE_TOOLS}_latest.zip > /cmdline-tools.zip \
  && mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools \
- && unzip /cmdline-tools.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools \
- && mv ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest \
+ && mkdir /temp \
+ && unzip /cmdline-tools.zip -d /temp \
+ && mv -v /temp/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest \
+ && rm -v -r /temp \
  && rm -v /cmdline-tools.zip
-
-RUN mkdir -p $ANDROID_SDK_ROOT/licenses/ \
- && echo "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > $ANDROID_SDK_ROOT/licenses/android-sdk-license \
- && echo "84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license \
- && yes | sdkmanager --licenses >/dev/null
 
 RUN mkdir -p /root/.android \
  && touch /root/.android/repositories.cfg \
+ && yes | sdkmanager --licenses >/dev/null \
  && sdkmanager --update
 
-ADD packages.txt /sdk
-RUN sdkmanager --package_file=/sdk/packages.txt
+ADD packages.txt ${ANDROID_SDK_ROOT}
+RUN sdkmanager --package_file=${ANDROID_SDK_ROOT}/packages.txt
