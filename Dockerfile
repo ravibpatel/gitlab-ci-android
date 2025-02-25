@@ -1,13 +1,13 @@
 FROM ubuntu:22.04
 LABEL maintainer="Ravi Patel <https://rbsoft.uservoice.com>"
 
-ENV COMMAND_LINE_TOOLS "11479570"
+ENV COMMAND_LINE_TOOLS="11479570"
 
-ENV ANDROID_SDK_ROOT "/android_sdk"
+ENV ANDROID_SDK_ROOT="/android_sdk"
 # Keep alias for compatibility
-ENV ANDROID_HOME "${ANDROID_SDK_ROOT}"
-ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools"
-ENV DEBIAN_FRONTEND noninteractive
+ENV ANDROID_HOME="${ANDROID_SDK_ROOT}"
+ENV PATH="$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools"
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -qq update \
  && apt-get install -qqy --no-install-recommends \
