@@ -1,8 +1,5 @@
 build-tools;35.0.0
-cmake;3.31.5
-extras;android;m2repository
-extras;google;m2repository
-extras;google;google_play_services
-ndk;28.0.13004108
+cmake;3.22.1
+ndk;27.0.12077973
 platform-tools
 platforms;android-35
