@@ -30,7 +30,7 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 RUN rm -f /etc/ssl/certs/java/cacerts; \
     /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
-# https://developer.android.com/tools/sdkmanager
+# https://developer.android.com/tools/agents/android-cli
 RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-${command_line_tools}_latest.zip > /cmdline-tools.zip \
  && mkdir -p ${ANDROID_HOME}/cmdline-tools \
  && mkdir /temp \
@@ -39,10 +39,17 @@ RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-${co
  && rm -v -r /temp \
  && rm -v /cmdline-tools.zip
 
-RUN mkdir -p /root/.android \
- && touch /root/.android/repositories.cfg \
- && yes | sdkmanager --licenses >/dev/null \
- && sdkmanager --update
+# sdkmanager is now a deprecated shim over the Android CLI, and --licenses is a no-op.
+# The 'android' launcher unpacks the real CLI on first run, so run it here to bake
+# that into the image rather than downloading it on every CI job.
+RUN android --no-metrics sdk update
 
 ADD packages.txt ${ANDROID_HOME}
-RUN sdkmanager --package_file=${ANDROID_HOME}/packages.txt
+# 'android sdk install' takes package ids as arguments (there is no --package_file)
+# and exits 0 even when an id does not resolve, so check afterwards that every
+# package landed: ids map 1:1 onto directories under ${ANDROID_HOME}.
+RUN tr -d '\r' < ${ANDROID_HOME}/packages.txt | xargs android --no-metrics sdk install \
+ && for package in $(tr -d '\r' < ${ANDROID_HOME}/packages.txt); do \
+      [ -d "${ANDROID_HOME}/${package}" ] \
+        || { echo "ERROR: package '${package}' was not installed" >&2; exit 1; }; \
+    done
