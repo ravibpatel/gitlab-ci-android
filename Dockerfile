@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 LABEL maintainer="Ravi Patel <https://rbsoft.uservoice.com>"
 
-ARG command_line_tools="11076708"
+ARG command_line_tools="16111833"
 
 ENV ANDROID_HOME="/android_sdk"
 ENV PATH="$PATH:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools"
@@ -14,7 +14,7 @@ RUN apt-get -qq update \
       git-core \
       ca-certificates \
       html2text \
-      openjdk-17-jdk \
+      openjdk-21-jdk \
       libc6-i386 \
       lib32stdc++6 \
       lib32gcc-s1 \
